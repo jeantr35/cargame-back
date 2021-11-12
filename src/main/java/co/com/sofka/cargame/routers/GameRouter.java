@@ -7,6 +7,7 @@ import co.com.sofka.cargame.model.NewPlayerToGameDTO;
 import co.com.sofka.cargame.usecases.AddPlayerUseCase;
 import co.com.sofka.cargame.usecases.CreateGameUseCase;
 import co.com.sofka.cargame.usecases.MoveCarUseCase;
+import co.com.sofka.cargame.usecases.StartGameUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -51,12 +52,23 @@ public class GameRouter {
 
     @Bean
     public RouterFunction<ServerResponse> moveCars(MoveCarUseCase moveCarUseCase) {
-        return route(POST("/movecar/{gameId}").and(accept(MediaType.APPLICATION_JSON)),
+        return route(POST("/movecars/{gameId}").and(accept(MediaType.APPLICATION_JSON)),
                 request -> ServerResponse.ok()
                         .contentType(MediaType.APPLICATION_JSON)
                         .body(BodyInserters.fromPublisher(
                                 moveCarUseCase.apply(request.pathVariable("gameId")),
                                 CarDTO.class
+                        ))
+        );
+    }
+
+    @Bean RouterFunction<ServerResponse> startCar(StartGameUseCase startGameUseCase){
+        return route(POST("/startgame/{gameId}").and(accept(MediaType.APPLICATION_JSON)),
+                request -> ServerResponse.ok()
+                        .contentType(MediaType.TEXT_PLAIN)
+                        .body(BodyInserters.fromPublisher(
+                                startGameUseCase.apply(request.pathVariable("gameId")),
+                                String.class
                         ))
         );
     }

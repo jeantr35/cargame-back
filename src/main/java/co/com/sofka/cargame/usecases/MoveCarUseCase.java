@@ -37,8 +37,11 @@ public class MoveCarUseCase implements Function<String, Flux<CarDTO>> {
         return laneRepository.findByGameId(gameId).flatMap(
                 lane -> carRepository.findById(lane.getCarId()).flatMap(
                         car -> {
-                            if (car.getDistance() < lane.getLength()*1000)
+                            if (car.getDistance() < lane.getLength()){
                                 car.moveCar(getDice.getDice() * 100);
+                            }else {
+                                car.setDistance(lane.getLength());
+                            }
                             return createCarUseCase.apply(car);
                         }
                 )
