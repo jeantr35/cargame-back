@@ -39,8 +39,9 @@ public class MoveCarUseCase implements Function<String, Flux<CarDTO>> {
                         car -> {
                             if (car.getDistance() < lane.getLength()){
                                 car.moveCar(getDice.getDice() * 100);
-                            }else {
-                                car.setDistance(lane.getLength());
+                                if (car.getDistance() >= lane.getLength()){
+                                    car.setDistance(lane.getLength());
+                                }
                             }
                             return createCarUseCase.apply(car);
                         }
