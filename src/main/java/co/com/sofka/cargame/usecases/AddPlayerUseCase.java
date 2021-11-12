@@ -37,7 +37,7 @@ public class AddPlayerUseCase implements Function<NewPlayerToGameDTO, Mono<Strin
         return createDriverUseCase.apply(mapperUtils.mapperToDriver(null).apply(newPlayerToGameDTO))
                 .flatMap(value -> createCarUseCase.apply(mapperUtils.mapperToCar(value).apply(newPlayerToGameDTO)).flatMap(
                         carValue -> gameRepository.findById(newPlayerToGameDTO.getGameId()).flatMap(
-                                game -> createLaneUseCase.apply(game.getId(), carValue, game.getLenghtKm()))
+                                game -> createLaneUseCase.apply(game.getId(), carValue, game.getLenghtKm()*1000))
                             )
                 ).thenReturn("Agregado");
     }

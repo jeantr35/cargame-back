@@ -52,4 +52,8 @@ public class Car {
     public void setDistance(Integer distance) {
         this.distance = distance;
     }
+
+    public void moveCar(Integer lanzarDado) {
+        this.distance += lanzarDado;
+    }
 }

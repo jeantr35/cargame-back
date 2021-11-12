@@ -4,6 +4,8 @@ import co.com.sofka.cargame.collections.Car;
 import co.com.sofka.cargame.collections.Driver;
 import co.com.sofka.cargame.collections.Game;
 import co.com.sofka.cargame.collections.Lane;
+import co.com.sofka.cargame.model.CarDTO;
+import co.com.sofka.cargame.model.GameDTO;
 import co.com.sofka.cargame.model.NewGameDTO;
 import co.com.sofka.cargame.model.NewPlayerToGameDTO;
 import org.springframework.stereotype.Component;
@@ -64,6 +66,26 @@ public class MapperUtils {
             lane.setId(null);
             return lane;
         };
+    }
+
+    public Function<Game, GameDTO> mapperToGameDTO(){
+        return game ->
+             new GameDTO(
+                    game.getId(),
+                    game.getLenghtKm(),
+                    game.getNumPlayers(),
+                    game.getPlaying(),
+                    game.getFinished(),
+                    game.getDate()
+            );
+    }
+
+    public Function<Car, CarDTO> mapperToCarDTO(){
+        return car -> new CarDTO(
+                car.getGameId(),
+                car.getName(),
+                car.getDistance()
+        );
     }
 
 }
