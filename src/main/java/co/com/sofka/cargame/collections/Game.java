@@ -16,7 +16,7 @@ public class Game {
     private Boolean playing;
     private Boolean finished;
     private LocalDate date;
-    private List<Player> playerList;
+    private List<Driver> playerList;
 
     public LocalDate getDate() {
         return date;
@@ -66,11 +66,15 @@ public class Game {
         this.finished = finished;
     }
 
-    public List<Player> getPlayerList() {
+    public List<Driver> getPlayerList() {
         return playerList;
     }
 
-    public void setPlayerList(List<Player> playerList) {
+    public void setPlayerList(List<Driver> playerList) {
         this.playerList = playerList;
+    }
+
+    public void addDriver(Driver driver){
+        this.playerList.add(driver);
     }
 }
