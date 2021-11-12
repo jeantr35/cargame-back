@@ -1,7 +1,9 @@
 package co.com.sofka.cargame.usecases.utils;
 
+import co.com.sofka.cargame.collections.Driver;
 import co.com.sofka.cargame.collections.Game;
 import co.com.sofka.cargame.model.NewGameDTO;
+import co.com.sofka.cargame.model.NewPlayerToGameDTO;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -25,6 +27,17 @@ public class MapperUtils {
             return game;
         };
 
+    }
+
+    public Function<NewPlayerToGameDTO, Driver> mapperToDriver(String id){
+        return newDriver -> {
+            var driver = new Driver();
+            driver.setId(id);
+            driver.setPlayerUsername(newDriver.getUsername());
+            driver.setGameId(newDriver.getGameId());
+            driver.setPosition(0);
+            return driver;
+        };
     }
 
 }
