@@ -4,10 +4,7 @@ package co.com.sofka.cargame.routers;
 import co.com.sofka.cargame.model.CarDTO;
 import co.com.sofka.cargame.model.NewGameDTO;
 import co.com.sofka.cargame.model.NewPlayerToGameDTO;
-import co.com.sofka.cargame.usecases.AddPlayerUseCase;
-import co.com.sofka.cargame.usecases.CreateGameUseCase;
-import co.com.sofka.cargame.usecases.MoveCarUseCase;
-import co.com.sofka.cargame.usecases.StartGameUseCase;
+import co.com.sofka.cargame.usecases.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -62,13 +59,24 @@ public class GameRouter {
         );
     }
 
-    @Bean RouterFunction<ServerResponse> startCar(StartGameUseCase startGameUseCase){
-        return route(POST("/startgame/{gameId}").and(accept(MediaType.APPLICATION_JSON)),
+    @Bean RouterFunction<ServerResponse> toggleGame(ToggleGameUseCase toggleGameUseCase){
+        return route(POST("/toggleplaygame/{gameId}/{state}").and(accept(MediaType.APPLICATION_JSON)),
                 request -> ServerResponse.ok()
                         .contentType(MediaType.TEXT_PLAIN)
                         .body(BodyInserters.fromPublisher(
-                                startGameUseCase.apply(request.pathVariable("gameId")),
+                                toggleGameUseCase.apply(request.pathVariable("gameId"), Boolean.parseBoolean(request.pathVariable("state"))),
                                 String.class
+                        ))
+        );
+    }
+
+    @Bean RouterFunction<ServerResponse> resetGame(RestartGameUseCase restartGameUseCase){
+        return route(POST("/resetgame/{gameId}").and(accept(MediaType.APPLICATION_JSON)),
+                request -> ServerResponse.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(BodyInserters.fromPublisher(
+                                restartGameUseCase.apply(request.pathVariable("gameId")),
+                                CarDTO.class
                         ))
         );
     }

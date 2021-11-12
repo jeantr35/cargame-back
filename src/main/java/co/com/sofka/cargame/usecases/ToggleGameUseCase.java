@@ -8,23 +8,20 @@ import reactor.core.publisher.Mono;
 import java.util.function.Function;
 
 @Service
-public class StartGameUseCase implements Function<String, Mono<String>> {
+public class ToggleGameUseCase {
 
     private final GameRepository gameRepository;
-    private final MapperUtils mapperUtils;
     private final UpdateGameUseCase updateGameUseCase;
 
-    public StartGameUseCase(GameRepository gameRepository, MapperUtils mapperUtils, UpdateGameUseCase updateGameUseCase) {
+    public ToggleGameUseCase(GameRepository gameRepository, UpdateGameUseCase updateGameUseCase) {
         this.gameRepository = gameRepository;
-        this.mapperUtils = mapperUtils;
         this.updateGameUseCase = updateGameUseCase;
     }
 
-    @Override
-    public Mono<String> apply(String gameId) {
+    public Mono<String> apply(String gameId, Boolean value) {
         return gameRepository.findById(gameId).flatMap(
                 game -> {
-                    game.setPlaying(true);
+                    game.setPlaying(value);
                     return updateGameUseCase.apply(game);
                 }
         );
