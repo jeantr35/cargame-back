@@ -1,7 +1,9 @@
 package co.com.sofka.cargame.usecases.utils;
 
+import co.com.sofka.cargame.collections.Car;
 import co.com.sofka.cargame.collections.Driver;
 import co.com.sofka.cargame.collections.Game;
+import co.com.sofka.cargame.collections.Lane;
 import co.com.sofka.cargame.model.NewGameDTO;
 import co.com.sofka.cargame.model.NewPlayerToGameDTO;
 import org.springframework.stereotype.Component;
@@ -37,6 +39,30 @@ public class MapperUtils {
             driver.setGameId(newDriver.getGameId());
             driver.setPosition(0);
             return driver;
+        };
+    }
+
+    public Function<NewPlayerToGameDTO, Car> mapperToCar(String id){
+        return newCar -> {
+            var car = new Car();
+            car.setId(null);
+            car.setDistance(0);
+            car.setGameId(newCar.getGameId());
+            car.setDriverId(id);
+            car.setName(newCar.getCarName());
+            return car;
+        };
+
+    }
+
+    public Function<String, Lane> mapperToLane(String gameId, Integer lengthKm){
+        return carId -> {
+            var lane = new Lane();
+            lane.setLength(lengthKm);
+            lane.setCarId(carId);
+            lane.setGameId(gameId);
+            lane.setId(null);
+            return lane;
         };
     }
 
